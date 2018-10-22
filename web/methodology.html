@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="KEM">
+
+    <title>KEM</title>
+
+    <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css">
+
+    <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="./vendor/jquery/jquery.min.js"></script>
+    <script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <nav class="navbar navbar-default sidebar" role="navigation">
+      <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button> 
+                            <div class="sidebar-logo">
+          <a class="sidebar-link" href="../index.html">
+            <div class="logo"><img src="img/logo-icon.png" alt=""></div>
+            <div class="logo-text"><h3>KEM</h3></div>
+          </a>
+        </div>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">  
+        
+        <ul class="nav navbar-nav">  
+          <li class="nav-item"><a href="../index.html"><span class="icon-holder"><i class="icon home"></i></span><span class="title">Home</span></a></li>
+          <li class="nav-item"><a href="overview.html"><span class="icon-holder"><i class="icon about"></i></span><span class="title">Overview</span></a></li>
+          <li class="nav-item"><a href="methodology.html"><span class="icon-holder"><i class="icon projects"></i></span><span class="title selected">Methodology</span></a></li>
+          <li class="nav-item"><a href="papers.html"><span class="icon-holder"><i class="icon papers"></i></span><span class="title">Publications</span></a></li>
+          <li class="nav-item"><a href="software.html"><span class="icon-holder"><i class="icon software"></i></span><span class="title">Software</span></a></li>
+          <li class="nav-item"><a href="example.html"><span class="icon-holder"><i class="icon example"></i></span><span class="title">Example</span></a></li>
+          <li class="nav-item"><a href="events.html"><span class="icon-holder"><i class="icon events"></i></span><span class="title">News & Events</span></a></li>
+          <li class="nav-item"><a href="https://github.com/KAPSARC/KEM_EMP" target="_blank"><span class="icon-holder"><i class="icon github"></i></span><span class="title">View the Project on GitHub</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
+      <div class="page-container">
+        <header>
+          <h2>KAPSARC Energy Model</h2>
+          <h4>A Framework for Energy Economics</h4>
+        </header>
+
+        <main class="main-content">
+          <div class="row">
+            <p>
+              The model can be evaluated as a superior decision system because its design now allows the user to generate any type of policy. It has been restructured with a new code design to facilitate the user interaction; including a code refactoring (separating the equations from sets/parameters/variables declaration (described in <a href="#directory-structure">Directory Structure</a>)), and sets of integration and pricing flags, explained below.
+            </p>
+            <h3 class="sub-title">Integration Logic</h3>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The integration flags (decision flags) in the model are used to either integrate/exclude a sector from the final model. It gives the user the ability to integrate a sector for certain country(s), meanwhile, exclude the same sector for other countries. This has been achieved by introducing unique flags for each sector and disaggregating the flags by countries. KEM follows divide and conquer paradigm; break down the main model into sub-models, configure the sub-models, and then rebuild the main model using the configured sub-models.
+              </p>
+              <p>
+                When the model gets compiled, each sub-model runs through sequential steps. These steps have two paths, shown in the figure 1 below; the first path, if the sector is integrated, the sub-model declares its own sets, parameters, private variables, linking variables, and equations. Then the sub-model defines its equations and generates its model block. The second path, if the sector is excluded, the sub-model declares its lining variables, fixes these variables to a baseline solution, and then hold. This means if a sector is excluded, its equations will not contribute to the final model.
+              </p>
+              <img class="chart" src="img/Integration.png">
+              <p style="text-align:left;">
+                <em> Note: </em> <br/>
+                <em> -Integration: Check if a sector and country combination is included in the final model. Include the necessary equations. </em> <br/>
+                <em> -Fixing: If a sector is excluded fix its demand quantity and the market price (marginal supply value). </em> <br/>
+                <em> -Initializing: Initializing sectoral sets and reading the sectoral parameters from the database for each country. </em> <br/>
+                <em> -Linking: Link each sectors demand with the corresponding supply sector, and set the governing pricing rules  </em> <br/>
+                <em> -Compiling: Compile optimal conditions given the pricing rules from linking stage.  </em>
+              </p>
+              <p style="text-align:center;"> Figure 1: Divide and Conquer scheme </p>
+            </div>
+            <h3 class="sub-title">Pricing Library</h3>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The current implementation of KEM has two types of pricing policies, Administered and marginal value; will be extended to include average cost pricing and price caps. One of the main issues in pricing policy implementations is resources scarcity when applying prices different than the marginal value. To overcome this issue, resource allocation constraints have been introduced in every sector, and only enforced when the prices have been set to administered prices.
+              </p>
+              <p>
+                The implementation of administered prices (fixed) is straightforward; it is basically setting the prices to some fixed parameters. This type of pricing policy is common in a regulated market, such as the GCC market, and an example of the administered prices is fuel prices in the GCC domestic market.
+              </p>
+              <p>
+                An average cost pricing policy is more flexible, in setting fixed prices, to the regulator in compare to the administered prices. The average cost can be computed by aggregating the supply cost of a given product and then dividing it by the total production.
+              </p>
+              <p>
+                A price cap policy (hybrid market) is setting the market prices to the marginal value up to a certain cap, established by the market regulator. This pricing policy requires more formulation using complementarity slackness (explained in <a href="">Rioux et al. 2019</a>).
+              </p>
+              <p>
+                As mentioned above, only administered and marginal values are implemented in the meantime. These two prices can be toggled using sectoral flags; all the inter-sectoral commodity (cross-cutting) activities have particular flags, aggregated by country, that can be used to switch between pricing policies. This implementation gives the user the freedom to have multiple pricing policies in the same scenario.
+              </p>
+            </div>
+            <h3 class="sub-title" id="directory-structure">Directory Structure</h3>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                To ease any future development and to help to maintain the model, a standard software development directory structure has been adopted for the model; the directory tree described below.
+              </p>
+              <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                  <pre><code>tree -d
+.
+├── build                       # compiled files and data queries
+│   └── data                    # load curves, queries, and baseline solution
+│       └── loadcurve           # electricity load curves of the countries in the model
+├── docs                        # KEM documentations
+│   ├── images                  # images and icons needed for the repository
+│   └── release                 # releases and highlight notes of KEM
+├── future_integration          # sectors to be integrated in the future
+├── src                         # source code for the model
+│   ├── data                    # parameters
+│   │   └── query               # parameters queries
+│   ├── dynamicSets             # dynamic sets configured on runtime
+│   ├── equations               # sub-models equations/functions code sources
+│   ├── sets                    # sub-models sets
+│   ├── share                   # shared sets, parameters, and variables across sectors
+│   └── variables               # sub-models variables
+├── tools                       # tools and utilities for the model
+└── trash                       # files to be deleted</code></pre>
+                </div>
+              </div>
+            </div>
+            <h3 class="sub-title">Agents</h3>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The number of agents in the model depends on the number of sectors and countries are integrated into the final model. Every sector for each country has been implemented as its optimizing agent. For example, if the integrated countries are KSA and UAE, and the integrated sectors are, upstream, power production, power transmission, water desalination, and emission; then, the number of agents are ten agents (two countries multiplied by five sectors).
+              </p>
+            </div>
+            <h3 class="sub-title">Implementation</h3>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                KEM is developed using General Algebraic Modeling System (<a href="https://www.gams.com/">GAMS</a>) which is a high-level modeling system for mathematical programming and optimization. KAPSARC aims to provide a virtual environment to run the model so that it is accessible to all users. Everything else, including the data, is contained within the model files.
+              </p>
+              <p>
+                The source code for the model is located in the <i>src</i> directory, and have been split by sectors into several files such as data, sets, variables, and equations. Each subdirectory only contains its source code by definition; which means equation source code will not have any set/parameter/variable declaration nor data modification/manipulation. Following these rules makes it easy to manage a model regardless of its size.
+              </p>
+              <p>
+                The data source codes contain all the declaration and definition of the parameters and data calibration needed for a sector. Also, it includes the initial assumptions of a sector such as capacity limitation, investment and exports boundaries. The sets/variables/equations are defined and declared, if needed, in their subdirectory. The subdirectory <i>share</i> contains shared parameters/sets, parameters and sets used in more than one sub-model, and the declaration of the linking variables (commodities and prices).
+              </p>
+              <p>
+                Part of the model management and implementations is, having sub-model abbreviations which are used as a prefix for the sectoral sets, parameters, variables, and equations followed by a descriptive name, defined in the table 1 below. These abbreviations ease grasping the model code, and immediately recognizing the controlling agent of a specific variable when reading the source code. Additionally, for the cross-cutting activity variables, the variables start with the consuming sector abbreviation, followed by the supplier sector abbreviation, and then ending with a descriptive name. For example, crude and gas consumption by the power generation sector will have a variable name <i>ELUPconsump</i>.
+              </p>
+              <table class="table-bordered" align="center">
+                <tr><th>sub-model</th><th>Abbreviation</th></tr>
+                <tr><td>Upstream Oil and Gas</td><td>UP</td></tr>
+                <tr><td>Power Generation</td><td>EL</td></tr>
+                <tr><td>Power Transmission</td><td>TR</td></tr>
+                <tr><td>Water desalination</td><td>WA</td></tr>
+                <tr><td>Refinery</td><td>RF</td></tr>
+                <tr><td>Petrochemical</td><td>PC</td></tr>
+                <tr><td>Cement</td><td>CM</td></tr>
+                <tr><td>Emission</td><td>EM</td></tr>
+              </table>
+              <p style="text-align:center;">Table 1: Sectoral Abbreviations</p>
+              <p>
+                Furthermore, KEM has been implemented with decision flags, integration and prices, used to configure the model based on the policy (explained in Flags). These flags give the user flexibility to generate a scenario with the least code modification.
+              </p>
+            </div>
+            <h4 class="bold margin">Flags</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The flags in the model are used to control sectoral integration, commodity prices per product, and trading among countries. The sectoral integration can be controlled by modifying <i>integrate</i> set which is aggregated over all the sectors and countries; setting <i>integrate(‘UP’,’ksa’)</i> to <i>yes</i> leads to incorporating the upstream sector for Saudi Arabia in the final model. The pricing policies can be generated by modifying the pricing flags; each sector has its flags which starts by the sector abbreviation followed by the supplier abbreviation and ending by <i>pflags</i>. For example, the price of <i>MTBE</i> soled by petrochemical to the refining sector can be toggled by setting <i>RFPCpflag(MTBE,’ksa’)</i> to <i>1</i> for marginal cost, or <i>2</i> for administered price. Table 2 shows all the integration and pricing flags in the model:
+              </p>
+              <table class="table-bordered" align="center">
+                <tr><th>Flag</th><th>Description</th>
+                </tr><tr><td>integrate</td><td>Sectoral integration in the final model</td>
+                </tr><tr><td>ELfuelpflag</td><td>Crude, Gas, and refined products bought by the power sector</td></tr>
+                <tr><td>WAfuelpflag</td><td>Crude, Gas, and refined products bought by the water sector</td></tr>
+                <tr><td>RFfuelpflag</td><td>Crude and Gas products bought by the refining sector</td></tr>
+                <tr><td>PCfuelpflag</td><td>Crude, Gas, and refined products bought by the petrochemical sector</td></tr>
+                <tr><td>CMfuelpflag</td><td>Crude, Gas, and refined products bought by the cement sector</td></tr>
+                <tr><td>WAELpflag</td><td>Prices for electricity consumed from the source by the water sector</td></tr>
+                <tr><td>TRELpflag</td><td>Prices for electricity consumed by the transmission sector</td></tr>
+                <tr><td>RFTRpflag</td><td>Electricity prices from the grid for the refining sector</td></tr>
+                <tr><td>PCTRpflag</td><td>Electricity prices from the grid for the petrochemical sector</td></tr>
+                <tr><td>CMTRpflag</td><td>Electricity prices from the grid for the cement sector</td></tr>
+                <tr><td>ELRETRpflag</td><td>Electricity prices for the residential consumption</td></tr>
+                <tr><td>ELWApflag</td><td>Electricity prices sold to the power sector from the water sector</td></tr>
+                <tr><td>RFPCpflag</td><td>Petrochemical products prices consumed by the refining sector</td></tr>
+                <tr><td>ELEMpflag</td><td>Emission taxes applied to the power sector</td></tr>
+                <tr><td>WAEMpflag</td><td>Emission taxes applied to the water sector</td></tr>
+                <tr><td>RFEMpflag</td><td>Emission taxes applied to the refining sector</td></tr>
+                <tr><td>PCEMpflag</td><td>Emission taxes applied to the petrochemical sector</td></tr>
+                <tr><td>CMEMpflag</td><td>Emission taxes applied to the cement sector</td></tr>
+              </table>
+              <p style="text-align:center;">Table 2: Integration and Pricing Flags</p>
+              <p>
+                The model also has the ability to generate electricity using multiple pricing policies for different consumers, such as domestic and international demands. Therefore, the model can fulfill its domestic demand using regulated fuel; meanwhile, can sell electricity to other countries suing deregulated fuel. Furthermore, the model can control electricity produced using renewable technologies and whether to include it in the trading or not; table 3 describes the trading flags:
+              </p>
+              <table class="table-bordered" align="center">
+                <tr><th>Flag</th><th>Description</th></tr>
+                <tr><td>tradecap</td><td>Cap for electricity cross-countries trading</td></tr>
+                <tr><td>rentrade</td><td>Include electricity produced by renewable in the trade cap</td></tr>
+                <tr><td>fMPt</td><td>Fuel prices for trade power generating</td></tr>
+              </table>
+              <p style="text-align:center;">Table 3: Trade Policy Flags</p>
+            </div>
+            <h4 class="bold margin">Style Guide</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                KEM has been built with a style guide to ease maintaining and developing the model; including file naming, identifiers, syntax coding standards and commenting. The model files should have a descriptive names and have <i>.gms</i> extension. The identifiers (set, scalars, parameters, variables, and equations) in the model can be categorized into two categories; sectoral and global identifiers. The global identifiers should have a descriptive names; the sectoral identifiers should starts with the sectoral abbreviation followed by a description. If a sectoral identifier used for commodity consumption, it should start by the consuming sector abbreviation followed by the producer abbreviation and ending with a description. The only exception case in the model are dual variables which should always start with <i>D</i> followed by the associated primal equation/variable name.
+              </p>
+              <p>
+                Another style used in KEM is having a uniform indentation across the code, which is used to identify the start and the end of a block of code. Block of code is considered to be inside the declaration of sets, parameters, scalar, variables, and equations or definition of an equation; also, content of loops, summation, and “if statements” are considered blocks of code. The following code snippet shows the proper code indentation
+              </p>
+              <pre><code>set
+  t   final model run time period /t1*t3/
+;
+variables
+    objval objective variable
+    .
+    .
+;
+equation
+    objective  minimizing cost
+;
+objective..
+    objval=e=
+    sum(t,
+        (Imports(t)+Construct(t)+Opandmaint(t))*discfact(t))
+;</code></pre>
+              <p>
+                Comments in KEM are essential prior to any equation, which makes the code readable to other developer. The comments should contain abstract description of the equation, precondition/postcondition for the equation. The precondition should describe the required parameters for the equation, and the postcondition should describe the result of the equation. An example of a comment block is shown bellow:
+              </p>
+              <pre><code>**************************************
+* Abstract: (The purpose of the equation)
+* Precondition: (What needed to be done in order to run the equation)
+* Postcondition: (What is the results of the equation)
+**************************************</code></pre>
+              <p>
+                For more in formation about style guide, please refer to this document <a href="../docs/styleGuide.pdf">style guide</a> in <i>docs</i> directory.
+              </p>
+            </div>
+            <h4 class="bold margin">Version Control</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                Version control is used to keep track of model modification as well as data calibration. The system used for version control is <a href="https://git-scm.com/">Git</a>, an open source system. Also, <a href="https://semver.org/">Semantic Versioning (SemVer)</a> is used to identify KEM’s releases. For more information about <a href="https://git-scm.com/">Git</a> or <a href="https://semver.org/">SemVer</a>, please use the provided links.
+              </p>
+            </div>
+            <h3 class="sub-title">Compiler (EMP)</h3>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                Extended Mathematical Programming (<a href="https://www.gams.com/latest/docs/UG_EMP.html">EMP</a>) framework is an extension compiler to GAMS, which can be used to reformulate models. EMP uses <a href="https://www.gams.com/latest/docs/S_JAMS.html">JAMS</a>, which is a GAMS solver, to create a scalar version of a given model, and to construct a reformulated model; some of these reformulated models are VI, MCP, NLP, and MIP.
+              </p>
+              <p>
+                KEM utilizes EMP to formulated the full MCP model, which requires deriving of the KKT stationarity conditions using the primal formulation. By using EMP, the number of equations in the full MCP needed to be constructed manually gets reduced to a half; therefore, it will save the developer a significant time and prevent any human errors. Generating the MCP model using EMP can be done by generating an “EMP statement” (described in Compiler Statement) that has the model type, optimization agent(s), primal endogenous variables/equations of each agent, and any implicit dual variable(s). After generating the EMP statement, the model can be solved using EMP solver, which will take care of generating the required model type as specified in the statement.
+              </p>
+            </div>
+            <h4 class="bold margin">Compiler Statement</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The EMP statement (compiler statement) has a generic syntax and the following steps describe generating a statement for equilibrium problems:
+              </p>
+              <ul>
+                <li>First, create a file using <i>‘File’</i> command with the name <i>‘%emp.info%’</i>. This specific name will allow GAMS to generate the file in the required path with the correct settings for the solver. </li>
+              <pre><code>File myinfo /'%emp.info%'/;</code></pre>
+              <li>Specify the model type by written it to the generated file using the <i>‘put’</i> command. </li>
+              <pre><code>put myinfo 'equilibrium';</code></pre>
+              <li>Write to the file the optimizing agents with either minimizing or maximizing option followed by their endogenous variables and equations. It is important for the compiler to list every agent and its variables/equations separately in a new line. It can be done by using <i>‘/’</i> tools.</li>
+              <pre><code>put / 'min', agent_a;
+put variables_a;
+put equations_a;
+put / 'min', agent_b;
+put variables_b;
+put equations_b;</code></pre>
+              <li>Write down all the implicit dual variables in new line (if there are any) using <i>‘dualvar’</i> tools followed by the dual variable and ending with the corresponding primal equation.</li>
+              <pre><code>put / 'dualvar', dual_a, primal_eq_a;
+put / 'dualvar', dual_b, primal_eq_b;</code></pre>
+              <li>After written all the required information, the file can be closed using <i>‘putclose’</i> command. </li>
+              <pre><code>putclose / myinfo;</code></pre>
+              <li>After following these steps, the model can be solved using <i>‘EMP’</i> </li>
+              <pre><code></code>solve modelName using EMP;</pre>
+              </ul>
+              <p>
+                Looking at the provided steps, it is obvious that generating an EMP statement for a large model with numerous variables and constraints can be difficult; therefore, a Python script with scraping algorithm has been devised to help the developer automate generating the EMP statement; the script scrapes an existing model and automatically generate the EMP statement. This automation can be accomplished only if there is a name convention applied to the model, the case of KEM. The naming convention, prefixes and suffixes, helps the script to identify all the endogenous variables and equations of each agent, and write them for the solver.
+              </p>
+              <p>
+                Script will be published in the future
+              </p>
+            </div>
+            <h3 class="sub-title">Solver (PATH)</h3>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                <a href="https://www.gams.com/latest/docs/S_PATH.html">PATH</a> is one of the superior solver for MCP problem in GAMS, faster solution report and robust algorithms.
+              </p>
+            </div>
+
+        </main>
+      </div>
+      <footer>
+        <span class="info">For more information email <a href="mailto:kem@kapsarc.org">kem@kapsarc.org</a></span>
+        <span class="copyright">Copyright KAPSARC. Open source MIT License</span>
+      </footer>
+    </div>
+
+</body>
+</html>

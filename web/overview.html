@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="KEM">
+
+    <title>KEM</title>
+
+    <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css">
+
+    <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="./vendor/jquery/jquery.min.js"></script>
+    <script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <nav class="navbar navbar-default sidebar" role="navigation">
+      <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button> 
+                            <div class="sidebar-logo">
+          <a class="sidebar-link" href="../index.html">
+            <div class="logo"><img src="img/logo-icon.png" alt=""></div>
+            <div class="logo-text"><h3>KEM</h3></div>
+          </a>
+        </div>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">  
+        
+        <ul class="nav navbar-nav">  
+          <li class="nav-item"><a href="../index.html"><span class="icon-holder"><i class="icon home"></i></span><span class="title">Home</span></a></li>
+          <li class="nav-item"><a href="overview.html"><span class="icon-holder"><i class="icon about"></i></span><span class="title selected">Overview</span></a></li>
+          <li class="nav-item"><a href="methodology.html"><span class="icon-holder"><i class="icon projects"></i></span><span class="title">Methodology</span></a></li>
+          <li class="nav-item"><a href="papers.html"><span class="icon-holder"><i class="icon papers"></i></span><span class="title">Publications</span></a></li>
+          <li class="nav-item"><a href="software.html"><span class="icon-holder"><i class="icon software"></i></span><span class="title">Software</span></a></li>
+          <li class="nav-item"><a href="example.html"><span class="icon-holder"><i class="icon example"></i></span><span class="title">Example</span></a></li>
+          <li class="nav-item"><a href="events.html"><span class="icon-holder"><i class="icon events"></i></span><span class="title">News & Events</span></a></li>
+          <li class="nav-item"><a href="https://github.com/KAPSARC/KEM_EMP" target="_blank"><span class="icon-holder"><i class="icon github"></i></span><span class="title">View the Project on GitHub</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
+      <div class="page-container">
+        <header>
+          <h2>KAPSARC Energy Model</h2>
+          <h4>A Framework for Energy Economics</h4>
+        </header>
+
+        <main class="main-content">
+          <div class="row">
+            <h3 class="sub-title">Overview</h3>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                KEM has been developed to study the role of subsidy reforms of the energy-intensive sectors mainly in Saudi Arabia and the GCC countries. These are electric power and transmission, petrochemicals, refining, water desalination, oil and gas upstream, and cement sectors. Petrochemical, refining, and cement sectors have been calibrated only for Saudi Arabia; meanwhile, the rest of the sectors have been calibrated for all the GCC countries. Each sector is contained within its own sub-model and acts as an agent that makes decisions on fuel usage, investment and technology to minimize its cost or maximize profit.
+              </p>
+              <p>
+                The development of KEM is a mixed-complementarity problem (<a href="https://pubsonline.informs.org/doi/pdf/10.1287/inte.2016.0842">MCP</a>) which allows the user to capture the non-market features resulting in prices that are different from the marginal cost. The MCP formulation allows the model to analyze policy options for redesigning of the pricing structure in the energy sector, while inducing conservation and optimal technological choices. Also, the model has been decomposed into several sub-models (sectors); each sector represents a major part of the economy. Every sector has its own parameters, variables, and equations which are included in the final model only if the sector is integrated. On the other hand, if the sector is excluded, its cross-cutting activities are set to a baseline solution.
+              </p>
+            </div>
+            <h3 class="sub-title">Model Architecture</h3>
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <p>
+                  KEM consists of seven sectors (Upstream Oil and Gas, Power Generation, Power Transmission, Water Desalination, Refinery, Petrochemical, and Cement); and each sector has been formulated as a standalone linear program with objective function includes the endogenous/exogenous cost/revenue including the cross-cutting activities among the sectors with the specified inter-sector prices. This ease any further development of KEM since each sector is contained within itself, and the final model is a concatenation of all the sectoral sub-models.
+                </p>
+                <p>
+                  The optimization of each sector is either to minimize its total cost or maximizing its total profit by changing the sectoral behavior which can be affected by the inter-sector transfer prices; these prices include marginal cost, quasi-market, administered, and capped prices. Since the domestic prices in the GCC countries are regulated, the development of all the sub-models have been done as a price taker.
+                </p>
+                <p>
+                  Every sector can be run separately, taking exogenous prices for input used in the sector and exogenous quantities for output demanded by other sectors; the flows among the sectors are shown in figure 1.
+                </p>
+                <img class="chart" src="img/Overview.png">
+                <p style="text-align:center;"> Figure 1: KEM's sectors and their interactions </p>
+                <p>
+                  KEM has been restructured (code refactoring) to improve its nonfunctional attribute and the source-code maintainability. The refactoring includes isolating the sets, parameters, variables, and equations from each-other. The refactoring is not just limited to the model source-code, but also includes a refactoring for the model directory, explained in (<a href="methodology.html#directory-structure">Directory Structure</a>).
+                </p>
+                <p>
+                  KEM splits the GCC countries into individual countries and single/multiple regions. The Kingdom has been split into four regions (Center, East, South and West), the United Arab Emirates has been also split into four regions (Abu Dhabi, Dubai, Sharjah, and the Federal Electricity and Water Authority, which encompasses the remaining emirates), Oman, for simplicity, was considered as a single region even though it has three electricity systems, and the rest of the GCC countries (Bahrain, Kuwait and Qatar) are represented as individual regions due to their small size.
+                  <!-- (<a href="">Wogan et al. (2018)</a>) -->
+                </p>
+              </div>
+            <h3 class="sub-title">Sectors</h3>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                Having a well restructured model facilitates the representation of each sector as a standalone model. In every sector, except Upstream, investment and production decisions are modeled. For every available technology and their vintages, the model considers the aggregated capacity by region. Each sub-model is modeled either as cost-minimization or profit maximization agent: Power generation and transmission, and Water are cost-minimization, and Upstream, Refinery, Petrochemical, and cement are profit-maximization.
+              </p>
+            </div>
+            <div class="bold margin">Upstream Oil and Gas</div>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The oil and gas production of the GCC countries is exogenously projected with available supplies at administered prices and pipeline structure that minimizes the cost of meeting regional demands through pipeline infrastructure. It is modeled as a profit maximization agent because it can export various crude oil grades at world market prices.
+              </p>
+            </div>
+            <h4 class="bold margin">Power Generation</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The electricity generation has been modeled to fulfilled the chronological load curves rather than load duration curves to represent the demand of electricity. To maintain model tractability, an hourly load curve is divided up into 8 load segments, with weekdays distinguished from weekends. The load curve is also broken up into three seasons: winter, summer, with the fall and spring seasons combined into a single season. This generates 6 load curves per region.
+              </p>
+              <p>
+                The planning reserve margin in the model requires that the model has enough reliable capacity to exceed the expected hourly peak load by 10 percent. This is a default setting and may be changed by the user. If the existing capacity at any point produces less than the required margin, additional capacity that contributes to it would have to be built. Renewable technologies are generally not able to contribute to the margin.
+              </p>
+              <p>
+                Power plant technologies currently represented are listed in table 1 below. They include plants that are already in place and prospective technologies in which the sector can invest. The conversion from open-cycle gas turbines (GT) to combined-cycle (CC) plants is solely an activity, and the resulting converted CC plant may have different operational characteristics than a new investment in a CC power plant. Thermal plants are characterized by heat rates (or net thermal efficiency in percent), variable and fixed operation and maintenance costs, ramping costs and capital costs in the case for new investment.
+              </p>
+              <p>
+                Steam plants with flue gas desulfurization exhibit slightly different operating characteristics when compared with those without. While we generally restrict the upper bound of HFO use in power generation to the values observed in 2015, this restriction is lifted for plants with desulfurization units. In addition, the increased self-consumption of electricity due to the operation of a desulfurization unit results in lower thermal efficiency for the plant.
+              </p>
+              <table class="table-bordered" align="center">
+                <tr><th>Type of Plants</th></tr>
+                <tr><td>Oil- or gas-fired steam</td></tr>
+                <tr><td>Oil-fired steam plants with desulfurization</td></tr>
+                <tr><td>Supercritical coal-fired steam</td></tr>
+                <tr><td>Open-cycle gas turbine</td></tr>
+                <tr><td>Combined-cycle plants</td></tr>
+                <tr><td>Conversion of open-cycle GT to CC</td></tr>
+                <tr><td>Photovoltaic</td></tr>
+                <tr><td>CSP with thermal energy storage</td></tr>
+                <tr><td>Nuclear</td></tr>
+                <tr><td>On-shore wind</td></tr>
+              </table>
+              <p style="text-align:center;"> Table 1: Power plant technologies. </p>
+              <p>
+                The representation of CSP in the current version of KEM is limited to parabolic trough technology with molten salt thermal energy storage. The storage mechanism allows for flexible settings by the user. We can include one, two or however many hours of storage. Figure 2 illustrates the approach taken to model the operating decisions of a CSP plant. Because of irreversiblilities such as friction effects, we consider a loss in heat between the point of reception and either the storage device or the steam generator; heat transferred out of the solar field may either be used to provide instantaneous heat to the steam generator or be stored for use when it is needed. Using direct normal irradiation (DNI) measurements, the amount of direct solar irradiation on the aperture plane of the collectors is first calculated to determine the rate of energy transfer from the solar field.
+              </p>
+              <img class="chart" src="img/Heat_flows_CSP.png">
+              <p style="text-align:center;"> Figure 2: Heat flows in the CSP plant with thermal storage.  </p>
+              <p>
+                Other power generation technologies included in KEM for Saudi Arabia are photovoltaics (PV) and onshore wind turbines. The power generated by these technologies is generally dependent on the availability of solar radiation and wind speeds.
+              </p>
+              <p>
+                For PV, we have estimated the power produced for up to 50 GW per region using the regional DNI. Then the model linearly interpolates between 0 GW and 50 GW for existing and newly-built capacity. The representation does not include electricity storage, which would shift the load curve differently. PV also degrade over time as a result of the thermal stresses imposed by cycling through the days; they have been found to degrade faster in harsher climates by Jordan and Kurtz (2012), like that experienced in most of GCC. We have included the degradation of PV panels over its life, whether it is run as a single-year static model or multi-period.
+              </p>
+              <p>
+                For wind turbines, the rate of energy transfer with wind is proportional to turbine speed cubed. Wind turbines are designed to operate only if the wind is between specified cut-in and cutoff speeds, and their power output plateaus once their rated wind speed is observed. For a typical turbine, we consider a cut-in speed of 3 meters per second, a cutoff speed of 25 meters per second and a rated speed of 13 meters per second (Al-Abbadi, 2005).
+              </p>
+              <p>
+                Due to the intermittent nature of solar radiation availability and wind speeds, the additional costs of operating spinning reserves are also incorporated when operating their capacity. For a given generation during a load segment, the model imposes 20 percent of the generation (in GW) to be met by up-spinning reserves. These reserves are subtracted from the capacity that can be operated and include additional fuel consumption costs that are a fraction of normal consumption costs.
+              </p>
+            </div>
+            <h4 class="bold margin">Power Transmission</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The transmission system operator (TSO) is treated as a separate entity from the generation sector. It is linked with the electricity generators and satisfies the power demands in the economy. The electricity transmission has been modeled as direct current optimal power flow instead of alternating current optimal power flow in order to reduce the computational complexity. Also, the model abides by the physical laws, such as Kirchhoff’s current law, that ultimately result in energy conservation.
+              </p>
+              <p>
+                The transmission module minimizes the total cost of the transmission system. This includes any investment, fixed and variable operation and maintenance costs, and electricity purchased from the generators. The electricity is traded at marginal cost of supply between generators and TSOs. If a country in the sector has more than one region, its regions are connected through an inter-regional lines (whether an existing line or giving the sector the freedom to build one). Furthermore, the sector has also an Interconnector that connects the GCC countries with a transmission line for electricity trade.
+              </p>
+              <p>
+                The Interconnector consists of a main corridor with feed lines to the individual country systems, figure 3 below. The backbone does not physically run through the UAE to connect Oman to the system. Instead, the UAE’s national grid acts as a bridge to Oman’s national grid. There are multiple connection points in Saudi Arabia, but they are modeled as one connection point in the Eastern Province.
+              </p>
+              <img class="chart" src="img/Interconnector.png">
+              <p style="text-align:center;"> Figure 3: Map of GCC members and the GCC Interconnector (shown by the thick black lines).  </p>
+            </div>
+            <h4 class="bold margin">Water Desalination</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The water sub-model optimizes investment and production decision for desalinated water, with the production of ground water taken as exogenous. As most of the desalinated water is produced through cogeneration, the water sector also minimizes total cost of supplying power generation capacity and electric energy to the power sector. Water demand is represented as a flat demand curve, assuming that sufficient water storage is readily available.
+              </p>
+              <p>
+                Desalination technologies are broken down into three categories; standalone thermal desalination, Reverse Osmosis (RO), and thermal cogeneration. Standalone thermal plants include Multiple-effect distillation (MED) and multi-stage flash distillation (MSF). Standard reverse osmosis technologies are represented in three different configuration; Salt Water RO (SWRO) and Brackish Water RO (BWRO) operating off a conventional electric power source, and Hybrid SWRO (SWROhyb) with power and water supplied by a cogeneration plant. The purpose of a Hybrid SWOR plants is combining product water from the two desalination cycles, increasing the minimum concentration of impurities in the SWRO product water, and total energy use.
+              </p>
+              <p>
+                Cogeneration plant types include Steam Turbine Cogeneration operating MSF units (STCo) and Combined Cycle Gas Turbine Cogeneration plants operating either MED (CCCoMED) or MSF (CCCoMSF) units. These cogeneration plants supply steam to the desalination cycle using a Back pressure steam Turbine Generator (BTG) with a fixed Power to Water Ratio (PWR). These plants supply baseload power running at full capacity.
+              </p>
+              <p>
+                Other cogeneration plants have variable PWR’s (STCoV, CCCoVMED, CCCoVMSF). These plants use Extraction Steam Turbines (EST) to vary the amount of energy extracted from a steam turbine for desalination. Gas Turbines cogeneration plants (GTCO) are configured with a Heat Recovery Steam Generator (HRSG).
+              </p>
+              <p>
+                Plants that can vary their PWR may store water off peak and generate excess power during peak demand period when the price communicated by the power sector model is sufficiently high. The MCP model has been configured such that the price of electricity paid to cogeneration plants by the power sector are administered. This reflects current policies with electricity prices fixed below the marginal value. This feature of the water model can be used to assess price coordination between the power and desalination sectors that can impact overall system operation and costs.
+              </p>
+            </div>
+            <h4 class="bold margin">Refinery</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                Refinery is a simplified version of a corporate refinery model, which aggregates capacity into one per region. The prices of crude oils observed by the refining sector are set to the marginal cost of the Upstream sector The units, process and product flows considered in the model are presented in the figure 4 below:
+              </p>
+              <img class="chart" src="img/Refinery_submodel.png">
+              <p style="text-align:center;"> Figure 4: Refinery scheme used in the model.  </p>
+              <p>
+                The sub-model contains activities for building each type of unit and the ability to operate the units at different severities. It includes four primary inputs: Arabian light, Arabian medium, Arabian heavy, and gas condensate. Also, it includes nine petroleum products: two grades of gasoline, diesel, liquefied petroleum gas (LPG), jet fuel, heavy fuel oil (HFO), naphtha, petroleum coke, and asphalt. The properties of blended products are specified according to Saudi Arabian Oil Co. requirements, and the sector has the ability to purchase materials from the petrochemical industry (MTBE). Furthermore, the sub-model has the flexibility in the use of electricity during operation, power can be either generated on-site or bought from the grid.
+              </p>
+            </div>
+            <h4 class="bold margin">Petrochemical</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The petrochemical sector is export-oriented. The sub-model accounts for 24 products, described in the table 2 below, spanning basic and intermediate chemicals, polymers, fertilizers, and specialty chemicals. The sub-model, like the other sectors, has build and operate activities that capture the different technology choices for producing bulk chemicals. Since this is an export sector, the sub-model is highly sensitive to the price differences between the feedstock cost and world market prices. Too great a price difference leads to extremely large additions of new capacity. Given that prices are administered, the sector has been modeled as a policy decision, not one based on pure economics.
+              </p>
+              <p>
+                Production of petrochemicals require intricate mass balances. A feedstock, like ethane or naphtha, is initially cracked to yield several products at different mass shares. The modeled units of a process are unit of input per unit of main product. The other produced materials are named as by-products and are accounted for in the mass balance relationships. The resulting product, for example ethylene, may either be sold as is or further processed to produce other chemicals downstream. The product of that process faces the same decision tree. They mass yields of each process are calibrated from Sumitomo Chemical (2006), the Kirk-Othmer Encyclopedia of Chemical Technology (2006), Aitani (2006) and Al-Manssoor (2008).
+              </p>
+              <table class="table-bordered" align="center">
+                <tr><th>Input</th><th>Process Path</th><th>Output</th></tr>
+                <tr><td>Ethane</td><td>Steam Cracking</td><td>Ethylene, Propylene, and Butadiene</td></tr>
+                <tr><td>Naphtha</td><td>Steam Cracking</td><td>Ethylene, Propylene, and Butadiene</td></tr>
+                <tr><td>Propane</td><td>Steam Cracking</td><td>Ethylene, Propylene, and Butadiene</td></tr>
+                <tr><td>Propane</td><td>Dehydrogenation</td><td>Propylene</td></tr>
+                <tr><td>Ethylene</td><td>Reactor-fractionation-evaporator-distiller</td><td>Ethylene Glycol</td></tr>
+                <tr><td>Ethylene</td><td>Polymerization (low-pressure)</td><td>HDPE</td></tr>
+                <tr><td>Ethylene</td><td>Polymerization (high-pressure)</td><td>LDPE</td></tr>
+                <tr><td>Ethylene</td><td>Polymerization (low-pressure)</td><td>LLDPE</td></tr>
+                <tr><td>Ethylene</td><td>Chlorination-oxidation-pyrolysis</td><td>VCM</td></tr>
+                <tr><td>Ethylene</td><td>Alkylation-dehydrogenation (liquid-phase)</td><td>Styrene and Toluene</td></tr>
+                <tr><td>Ethylene</td><td>Alkylation-dehydrogenation (gas-phase)</td><td>Styrene and Toluene</td></tr>
+                <tr><td>VCM and Toluene</td><td>Suspension polymerization</td><td>PVC</td></tr>
+                <tr><td>VCM</td><td>Bulk polymerization</td><td>PVC</td></tr>
+                <tr><td>Styrene</td><td>Reactor-centrifuge-blending (Lummus Crest)</td><td>Polystyrene</td></tr>
+                <tr><td>Propylene</td><td>Union Carbide/Shell process</td><td>Polypropylene</td></tr>
+                <tr><td>Propylene</td><td>Himont Inc. spheripol process</td><td>Polypropylene</td></tr>
+                <tr><td>Methane</td><td>Reformer-reactor (ICI LCA process)</td><td>Ammonia</td></tr>
+                <tr><td>Methane</td><td>Desulfurization-reactor-xxchanger</td><td>Methanol</td></tr>
+                <tr><td>Methanol</td><td>Reactor-distillation-extractor (BP process)</td><td>MTBE</td></tr>
+                <tr><td>Propylene</td><td>Hydroformylation-condensation-hydrogenation</td><td>2-EH</td></tr>
+                <tr><td>Ammonia</td><td>Reactor-crystallization-prilling</td><td>Urea</td></tr>
+                <tr><td>Ethylene</td><td>Catalytic reaction with acetic acid &amp; palladium</td><td>Vinyl Acetate</td></tr>
+                <tr><td>Propylene</td><td>Chlorohydrin process</td><td>Propylene Oxide</td></tr>
+                <tr><td>Propylene</td><td>Epoxidation with Ethylbenzene Hydroperoxide</td><td>Propylene Oxide and Styrene</td></tr>
+                <tr><td>Propylene Oxide</td><td>Hydration</td><td>Propylene Glycol</td></tr>
+                <tr><td>Methane</td><td>Kellogg Process</td><td>Ammonia</td></tr>
+                <tr><td>Methanol</td><td>Oxidation and catalysis using Fe-Mo oxide catalyst</td><td>Formaldehyde</td></tr>
+                <tr><td>Urea and Formaldehyde</td><td>Alkaline methylolation and acid condensation</td><td>Urea-Formaldehyde Resin</td></tr>
+                <tr><td>Ammonia</td><td>DAP plant with granulation units</td><td>Diammonium phosphate(DAP)</td></tr>
+              </table>
+              <p style="text-align:center;"> Table 2: Production process path</p>
+            </div>
+            <h4 class="bold margin">Cement</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                The sub-model accounts for the production of three types of cement, the production flows are depicted in the figure 5. The sub-model, which behaves as a profit-maximizing agent, is designed to meet domestic demand but may also export finished product. Furthermore, the sub-model has the ability to import either clinker or finished cement. Only dry process are used in Saudi Arabia, therefore, the sub-model considers the installation and operation of long dry kilns, kilns with preheating, and kilns with both preheating and precalcination. The sub-model also has the ability to upgrade existing long dry kilns to the more efficient technologies. Purchases from the upstream and refining sectors, the fuels considered for operating the kilns are crude oil, natural gas, diesel, and HFO. As in the refining sub-model, cement companies are able to produce electricity on-site or purchase from the grid.
+              </p>
+              <img class="chart" src="img/Cement_submodel.png">
+              <p style="text-align:center;"> Figure 5: Cement production path.</p>
+              <p>
+                The preceding coefficients are the number of moles to achieve a chemical balance. These molar coefficients are calculated by the model based on the required mass composition of clinker for each type of cement; the clinker mass content is specified according to the standard ASTM C- 150. As shown by the chemical reactions, calcite is first dissociated to carbon dioxide and calcium oxide. The calcium oxide and the remainder of the raw mix are then reacted at a higher temperature to produce clinker. Achieving the required reaction conditions is the main driver of energy consumption during cement production. Based on van Oss (2005), the modeled cement kiln dust (CKD) output is estimated to be 17 percent by mass of total kiln output. After being cooled, the clinker is mixed with gypsum and/or pozzolan (differing mixing requirements based on cement type), and the mixture passes through the grinder to produce final cement.
+              </p>
+            </div>
+            <h4 class="bold margin">Emission</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>
+                Emissions of certain pollutants in all of the sectors characterized by KEM have been accounted; they are carbon dioxide (CO<sub>2</sub>), NO<sub>x</sub>, and SO<sub>x</sub>. Although the module is modeled is to minimize emissions costs, the price of emissions is set to zero by default. So by default, the objective function is always zero and therefore it is not truly being minimized; the resulting operation of the sectors in KEM is not influenced.
+              </p>
+          </div>
+          <!-- <br> -->
+          <!-- <div class="row"> -->
+<!--             <h4 class="sub-title margin">The Team</h4>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div><a href="https://www.kapsarc.org/researchers/brian-efird/" target="_blank">Brian Efird</a></div>
+              <div><a href="https://www.kapsarc.org/researchers/saleh-al-muhanna/" target="_blank">Saleh Al Muhanna</a></div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div><a href="https://www.kapsarc.org/researchers/j-andrew-howe/" target="_blank">J. Andrew Howe</a></div>
+              <div><a href="https://www.linkedin.com/in/paul-mollet-ba3b853" target="_blank">Paul Mollet</a></div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div><a href="https://www.kapsarc.org/researchers/imtenan-almubarak/" target="_blank">Imtenan Al-Mubarak</a></div>
+              <div><a href="https://www.kapsarc.org/researchers/alhosain-nourah/" target="_blank">Nourah Al Hosain</a></div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div><a href="https://www.kapsarc.org/researchers/lama-yaseen/" target="_blank">Lama Yaseen</a></div>
+              <div><a href="https://www.linkedin.com/in/aljawharaalquayid/" target="_blank">Aljawhara Al Quayid</a></div>
+            </div> -->
+          <!-- </div> -->
+          <!-- <br> -->
+<!--           <div class="row">
+            <div class="col-md-12">
+              <h4 class="sub-title">License Information</h4>
+              <div>If you are interested in contributing code, ideas, or data to KEM, please contact us.</div>
+              <div>KEM is released under The MIT License (Expat). For details, see the following URLs:</div>
+              <div><a href="http://opensource.org/" target="_blank">http://opensource.org/</a></div>
+              <div><a href="http://opensource.org/licenses/MIT" target="_blank">http://opensource.org/licenses/MIT</a></div>
+            </div>
+          </div> -->
+        </main>
+      </div>
+      <footer>
+        <span class="info">For more information email <a href="mailto:kem@kapsarc.org">kem@kapsarc.org</a></span>
+        <span class="copyright">Copyright KAPSARC. Open source MIT License</span>
+      </footer>
+    </div>
+
+</body>
+</html>

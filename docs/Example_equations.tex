@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage[margin=0.5in]{geometry}
+
+\begin{document}
+    \begin{align}
+        & \min_{UP_{supply},EL_{invs},UP_{exports}} & & UP_{supply}\cdot UP_{fuelcst}+\sum_{ELp}EL_{invs}(ELp)\cdot EL_{capital}(ELp)-UP_{exports}\cdot UP_{intlprice} \label{eq:one}\\
+        & \text{s.t.} & &  EL_{dem} - \sum_{ELp}EL_{op}(ELp) \leq 0 \tag{\ref{eq:one}.1}\\
+        & & &  EL_{op}(ELp) - EL_{invs}(ELp) \leq 0 \tag{\ref{eq:one}.2}\\
+        & & &  UP_{supply} \leq UP_{fuelsupmax} \tag{\ref{eq:one}.3}\\
+        & & & \sum_{ELp}EL_{op}(ELp)\cdot EL_{fuelburn}(ELp) - EL_{UPconsump} \leq 0 \tag{\ref{eq:one}.4}\\
+        & & & EL_{UPconsump}+UP_{exports}-UP_{supply} \leq 0 \tag{\ref{eq:one}.5}\\
+        & & & EL_{op}(ELp)\geq 0, EL_{invs}(ELp)\geq 0, UP_{exports}\geq 0\nonumber
+    \end{align}
+    \\
+    \\
+    \begin{align}
+        & \min_{UP_{supply},UP_{exports}} & & UP_{supply}\cdot UP_{fuelcst}-UP_{exports}\cdot UP_{intlprice}-EL_{UPconsump}\cdot EL_{fuelprice} \label{eq:two}\\
+        & \text{s.t.} & &  EL_{UPconsump}+UP_{exports}-UP_{supply} \leq 0 \tag{\ref{eq:two}.1}\\
+        & & & UP_{supply} - UP_{fuelsupmax} \leq 0 \tag{\ref{eq:two}.2}\\
+        & & & UP_{exports}\geq 0, UP_{supply} \geq 0\nonumber
+    \end{align}
+    \\
+    \\
+    \begin{align}
+        & \min_{EL_{invs},EL_{UPconsump}} & & \sum_{ELp}EL_{invs}(ELp)\cdot EL_{capital} + EL_{UPconsump}\cdot EL_{fuelprice} \label{eq:three}\\
+        & \text{s.t.} & &  \sum_{ELp}EL_{op}(ELp)\cdot EL_{fuelburn}(ELp) - EL_{UPconsump} \leq 0 \tag{\ref{eq:three}.1}\\
+        & & & EL_{dem} - \sum_{ELp}EL_{op}(ELp) \leq 0 \tag{\ref{eq:three}.2}\\
+        & & & EL_{op}(ELp) - EL_{invs}(ELp) \leq 0 \tag{\ref{eq:three}.3}\\
+        & & & EL_{invs}\geq 0, EL_{UPconsump} \geq 0, EL_{op} \geq 0\nonumber
+    \end{align}
+    \\
+    \\
+    $$EL_{dem} - \sum_{ELp}EL_{op}(ELp) \leq 0\qquad\qquad\perp\qquad DEL_{sup}$$
+    \\
+    \\
+    \begin{align}
+    &EL_{UPconsump}+UP_{exports}-UP_{supply} \leq 0\qquad\qquad\perp\qquad DUP_{dem}\tag{\ref{eq:two}.1}\\
+    & EL_{fuelprice} = \begin{cases}
+                            DUP_{dem}, & \text{in the deregulated competitive market}.\\
+                            UP_{AP},    & \text{in the market with administered prices}.
+                        \end{cases}\tag{\ref{eq:three}.4}
+    \end{align}
+\end{document}
