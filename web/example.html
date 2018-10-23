@@ -23,20 +23,16 @@
         extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
         jax: ["input/TeX"],
         tex2jax: {
-            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-            processEscapes: false
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: false
         },
         TeX: {
-            TagSide: "right",
-            TagIndent: ".8em",
-            MultLineWidth: "85%",
-            equationNumbers: {
-               autoNumber: "AMS",
-            },
-            unicode: {
-               fonts: "STIXGeneral,'Arial Unicode MS'"
-            }
+          TagSide: "right",
+          TagIndent: ".8em",
+          MultLineWidth: "85%",
+          equationNumbers: { autoNumber: "AMS" },
+          unicode: { fonts: "STIXGeneral,'Arial Unicode MS'" }
         },
         showProcessingMessages: false
     });
@@ -129,26 +125,28 @@ positive variables
     ELinvs(ELp)     'Total investment in each technology'
     ELUPconsump     'Total fuel consumption, cross-cutting activity'
 ;</code></pre>
-\begin{align}
-    & \min_{UP_{supply},EL_{invs},UP_{exports}} & & UP_{supply}\cdot UP_{fuelcst}+\sum_{ELp}EL_{invs}(ELp)\cdot EL_{capital}(ELp)-UP_{exports}\cdot UP_{intlprice} \tag{1}\label{eq:one}\\
-    & \text{s.t.} & &  EL_{dem} - \sum_{ELp}EL_{op}(ELp) \leq 0 \tag{\ref{eq:one}.1}\\
-    & & &  EL_{op}(ELp) - EL_{invs}(ELp) \leq 0 \tag{\ref{eq:one}.2}\\
-    & & &  UP_{supply} \leq UP_{fuelsupmax} \tag{\ref{eq:one}.3}\\
-    & & & \sum_{ELp}EL_{op}(ELp)\cdot EL_{fuelburn}(ELp) - EL_{UPconsump} \leq 0 \tag{\ref{eq:one}.4}\\
-    & & & EL_{UPconsump}+UP_{exports}-UP_{supply} \leq 0 \tag{\ref{eq:one}.5}\\
-    & & & EL_{op}(ELp)\geq 0, EL_{invs}(ELp)\geq 0, UP_{exports}\geq 0\nonumber
-\end{align}
-          <!-- <img class="chart" src="img/eq/block_01.png"> -->
+          <p>
+            \begin{align}
+                & \min_{UP_{supply},EL_{invs},UP_{exports}} & & UP_{supply}\cdot UP_{fuelcst}+\sum_{ELp}EL_{invs}(ELp)\cdot EL_{capital}(ELp)-UP_{exports}\cdot UP_{intlprice} \tag{1}\label{eq:one}\\
+                & \text{s.t.} & &  EL_{dem} - \sum_{ELp}EL_{op}(ELp) \leq 0 \tag{\ref{eq:one}.1}\\
+                & & &  EL_{op}(ELp) - EL_{invs}(ELp) \leq 0 \tag{\ref{eq:one}.2}\\
+                & & &  UP_{supply} \leq UP_{fuelsupmax} \tag{\ref{eq:one}.3}\\
+                & & & \sum_{ELp}EL_{op}(ELp)\cdot EL_{fuelburn}(ELp) - EL_{UPconsump} \leq 0 \tag{\ref{eq:one}.4}\\
+                & & & EL_{UPconsump}+UP_{exports}-UP_{supply} \leq 0 \tag{\ref{eq:one}.5}\\
+                & & & EL_{op}(ELp)\geq 0, EL_{invs}(ELp)\geq 0, UP_{exports}\geq 0\nonumber
+            \end{align}
+          </p>
           <p>
             To emphasize the optimizing decisions for the two integrated sectors, we can split (1) into two separate optimization problems for the upstream and power, equation block (2) and (3) respectively. Before splitting the two sectors, we need to define a free variable ELfuelprice representing the price at which fuel is purchased by the power sector from the upstream sector, and set it to the marginal cost of fuel.
           </p>
-\begin{align}
-    & \min_{UP_{supply},UP_{exports}} & & UP_{supply}\cdot UP_{fuelcst}-UP_{exports}\cdot UP_{intlprice}-EL_{UPconsump}\cdot EL_{fuelprice} \tag{2}\label{eq:two}\\
-    & \text{s.t.} & &  EL_{UPconsump}+UP_{exports}-UP_{supply} \leq 0 \tag{\ref{eq:two}.1}\\
-    & & & UP_{supply} - UP_{fuelsupmax} \leq 0 \tag{\ref{eq:two}.2}\\
-    & & & UP_{exports}\geq 0, UP_{supply} \geq 0\nonumber
-\end{align}
-          <!-- <img class="chart" src="img/eq/block_02.png"> -->
+          <p>
+            \begin{align}
+                & \min_{UP_{supply},UP_{exports}} & & UP_{supply}\cdot UP_{fuelcst}-UP_{exports}\cdot UP_{intlprice}-EL_{UPconsump}\cdot EL_{fuelprice} \tag{2}\label{eq:two}\\
+                & \text{s.t.} & &  EL_{UPconsump}+UP_{exports}-UP_{supply} \leq 0 \tag{\ref{eq:two}.1}\\
+                & & & UP_{supply} - UP_{fuelsupmax} \leq 0 \tag{\ref{eq:two}.2}\\
+                & & & UP_{exports}\geq 0, UP_{supply} \geq 0\nonumber
+            \end{align}
+          </p>
           <pre><code>* Equation (2)
 UPobjective..
     UPobjval
@@ -173,14 +171,15 @@ UPdem..
           <p>
             In (2), the upstream sector minimizes its objective function subject to the fuel demand and supply constraint, (2.1) and (2.2). The objective function includes the cost of supplying fuel <i>UP<sub>supply</sub>UP<sub>fuelcst</sub></i> less than revenues from exports <i>UP<sub>exports</sub>UP<sub>intlprice</sub></i> as well as revenues from selling to the power sector <i>EL<sub>UPconsump</sub>EL<sub>fuelprice</sub></i>. The revenues from the power sector is exogenous to the upstream sector, and this variables can be called a <b>cross-cutting activity variable</b> because it is used to communicate the fuel demand by the power sector.
           </p>
-\begin{align}
-    & \min_{EL_{invs},EL_{UPconsump}} & & \sum_{ELp}EL_{invs}(ELp)\cdot EL_{capital} + EL_{UPconsump}\cdot EL_{fuelprice} \tag{3}\label{eq:three}\\
-    & \text{s.t.} & &  \sum_{ELp}EL_{op}(ELp)\cdot EL_{fuelburn}(ELp) - EL_{UPconsump} \leq 0 \tag{\ref{eq:three}.1}\\
-    & & & EL_{dem} - \sum_{ELp}EL_{op}(ELp) \leq 0 \tag{\ref{eq:three}.2}\\
-    & & & EL_{op}(ELp) - EL_{invs}(ELp) \leq 0 \tag{\ref{eq:three}.3}\\
-    & & & EL_{invs}\geq 0, EL_{UPconsump} \geq 0, EL_{op} \geq 0\nonumber
-\end{align}
-          <!-- <img class="chart" src="img/eq/block_03.png"> -->
+          <p>
+            \begin{align}
+                & \min_{EL_{invs},EL_{UPconsump}} & & \sum_{ELp}EL_{invs}(ELp)\cdot EL_{capital} + EL_{UPconsump}\cdot EL_{fuelprice} \tag{3}\label{eq:three}\\
+                & \text{s.t.} & &  \sum_{ELp}EL_{op}(ELp)\cdot EL_{fuelburn}(ELp) - EL_{UPconsump} \leq 0 \tag{\ref{eq:three}.1}\\
+                & & & EL_{dem} - \sum_{ELp}EL_{op}(ELp) \leq 0 \tag{\ref{eq:three}.2}\\
+                & & & EL_{op}(ELp) - EL_{invs}(ELp) \leq 0 \tag{\ref{eq:three}.3}\\
+                & & & EL_{invs}\geq 0, EL_{UPconsump} \geq 0, EL_{op} \geq 0\nonumber
+            \end{align}
+          </p>
           <pre><code>* Equation (3)
 ELobjective..
     ELobjval
@@ -221,8 +220,9 @@ ELcapacity(ELp)..
             </ul>
             In complementarity theory dual variables are defined as the vectors orthogonal to the inequality constraints in an optimization problem. For example we define a dual variable <i>DEL<sub>sup</sub></i> for (3.2):
           </p>
-          $$EL_{dem} - \sum_{ELp}EL_{op}(ELp) \leq 0\qquad\qquad\perp\qquad DEL_{sup}$$
-          <!-- <img class="chart" src="img/eq/block_04.png"> -->
+          <p>
+            $$EL_{dem} - \sum_{ELp}EL_{op}(ELp) \leq 0\qquad\qquad\perp\qquad DEL_{sup}$$
+          </p>
           <p>
             that can only take on a positive value when the constraint is binding. Here is an economic interpretation of this complementarity theory. When the supply of electricity equals demand at equilibrium the marginal value, or price, of the electricity can be positive, <i>DEL<sub>sup</sub> > 0</i>. If the market is oversupplied, then the marginal value, or price of electricity is zero, <i>DEL<sub>sup</sub> = 0</i>.
           </p>
@@ -232,14 +232,15 @@ ELcapacity(ELp)..
           <p>
             Now, let us define an explicit dual variable for the fuel cost as well as defining an identity that controls the fuel price for the power sector, <i>EL<sub>fuelprice</sub></i>:
           </p>
-\begin{align}
-  &EL_{UPconsump}+UP_{exports}-UP_{supply} \leq 0\qquad\qquad\perp\qquad DUP_{dem}\tag{\ref{eq:two}.1}\\
-  & EL_{fuelprice} = \begin{cases}
-                          DUP_{dem}, & \text{in the deregulated competitive market}.\\
-                          UP_{AP},    & \text{in the market with administered prices}.
-                      \end{cases}\tag{\ref{eq:three}.4}
-\end{align}
-          <!-- <img class="chart" src="img/eq/block_05.png"> -->
+          <p>
+            \begin{align}
+              &EL_{UPconsump}+UP_{exports}-UP_{supply} \leq 0\qquad\qquad\perp\qquad DUP_{dem}\tag{\ref{eq:two}.1}\\
+              & EL_{fuelprice} = \begin{cases}
+                                      DUP_{dem}, & \text{in the deregulated competitive market}.\\
+                                      UP_{AP},    & \text{in the market with administered prices}.
+                                  \end{cases}\tag{\ref{eq:three}.4}
+            \end{align}
+          </p>
           <pre><code>* Equation (3.4)
 * ELUPpflag is a flag set by the market regulator
 ELfuel_regulator..
