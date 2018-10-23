@@ -16,6 +16,31 @@
   <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <script src="./vendor/jquery/jquery.min.js"></script>
   <script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script>
+    MathJax.Hub.Config({
+        config: ["MMLorHTML.js"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+        jax: ["input/TeX"],
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: false
+        },
+        TeX: {
+            TagSide: "right",
+            TagIndent: ".8em",
+            MultLineWidth: "85%",
+            equationNumbers: {
+               autoNumber: "AMS",
+            },
+            unicode: {
+               fonts: "STIXGeneral,'Arial Unicode MS'"
+            }
+        },
+        showProcessingMessages: false
+    });
+  </script>
 </head>
 
 <body>
@@ -67,6 +92,7 @@
           <p>
             Here is an example of designing a model with two sectors (sub-models), upstream and power. The example follows all KEM style guide, and shows how to build an MCP model using EMP.
           </p>
+          <p>This is a simple equation $$\frac{1}{2}x + 2 \geq 5$$</p>
           <p>
             The upstream sector supplies fuel to the power sector, at price set by the regulator, and the export market, at international prices; meanwhile, the power supplies electricity to a fixed demands. The power sector has two investment options in type of technologies; low investment cost with high fuel consumption (low efficiency), and high investment cost with low fuel consumption (high efficiency).
           </p>
