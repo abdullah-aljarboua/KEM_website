@@ -23,8 +23,7 @@
         download: true,
         header:true,
         complete: function (results) {
-          console.log(results);
-          results.data.forEach(pub => {
+          results.data.forEach(function(pub){
             if(pub.type && pub.type != "")
               $( "#"+pub.type.trim()).append( '<div class="row kard"><div class="col-md-12"><div class="paper-holder"><a href="'+pub.link+'" target="_blank"><img src="img/'+pub.type.trim()+'.png" class="paper-img"><p class="paper-title">'+pub.title+'</p></a><p class="paper-author">'+pub.Author+'</p></div></div></div>' );
           });
